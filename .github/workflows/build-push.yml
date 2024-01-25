@@ -31,4 +31,4 @@ jobs:
           docker build -t python-app .
           docker tag python-app:latest 851725457089.dkr.ecr.eu-central-1.amazonaws.com/ecr-task:$IMAGE_TAG
           docker login --username AWS -p $ACCOUNT_PASS 851725457089.dkr.ecr.eu-central-1.amazonaws.com
-          docker push 851725457089.dkr.ecr.eu-central-1.amazonaws.com/ecr-task::$IMAGE_TAG
+          docker push 851725457089.dkr.ecr.eu-central-1.amazonaws.com/ecr-task:$IMAGE_TAG
