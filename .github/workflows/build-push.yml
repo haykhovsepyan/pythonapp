@@ -27,5 +27,6 @@ jobs:
           ECR_REPOSITORY: ${{secrets.AWS_ECR_REPO}}
           IMAGE_TAG: ci-tag
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t python-app .
+          docker tag python-app:latest 851725457089.dkr.ecr.eu-central-1.amazonaws.com/ecr-task:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
