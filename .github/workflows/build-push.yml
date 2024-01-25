@@ -1,6 +1,5 @@
 name: "build-push-ecr"
-on:
-  workflow_dispatch:
+on: [push]
 
 jobs:
   ECR_Deployment:
