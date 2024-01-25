@@ -2,7 +2,7 @@ name: "build-push-ecr"
 on: [push]
 
 jobs:
-  ECR_Deployment:
+  BUILD_PUSH:
     name: Build Docker Image And Push To ECR
     runs-on: ubuntu-latest
     steps:
@@ -23,12 +23,12 @@ jobs:
       - name: Build and push the tagged docker image to Amazon ECR
         id: containerImage
         env:
-          ECR_REGISTRY: ${{ steps.login-pf-aws-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ secrets.ECR_URL }}
           ECR_REPOSITORY: ${{secrets.AWS_ECR_REPO}}
           ACCOUNT_PASS: ${{ secrets.PASSWORD}}
-          IMAGE_TAG: ci-tag
+          IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t python-app .
-          docker tag python-app:latest 851725457089.dkr.ecr.eu-central-1.amazonaws.com/ecr-task:$IMAGE_TAG
-          docker login --username AWS -p $ACCOUNT_PASS 851725457089.dkr.ecr.eu-central-1.amazonaws.com
-          docker push 851725457089.dkr.ecr.eu-central-1.amazonaws.com/ecr-task:$IMAGE_TAG
+          docker tag python-app:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker login --username AWS -p $ACCOUNT_PASS $ECR_REGISTRY
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
